@@ -43,7 +43,8 @@ class StarManager {
     }
     
     func syncToDisk() {
-        UserDefaults.standard.setValue(staredStoreList, forKey: "ASA_staredStoreList")
+        let list = staredStoreList.compactMap({$0.storeNumber})
+        UserDefaults.standard.setValue(list, forKey: "ASA_staredStoreList")
     }
     
     func clearAll() {
