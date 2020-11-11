@@ -6,6 +6,8 @@
 //
 
 import UIKit
+import AudioToolbox
+import UserNotifications
 
 class CheckViewController: UIViewController {
 
@@ -14,8 +16,6 @@ class CheckViewController: UIViewController {
         label.textColor = .black
         label.textAlignment = .center
         label.numberOfLines = 0
-        label.font = UIFont.boldSystemFont(ofSize: 30)
-        label.text = "点击下方开始"
         return label
     }()
     
@@ -24,7 +24,7 @@ class CheckViewController: UIViewController {
         btn.setTitle("开始", for: .normal)
         btn.setTitle("暂停", for: .selected)
         btn.setTitleColor(.black, for: .normal)
-        btn.setTitleColor(.red, for: .selected)
+        btn.setTitleColor(.gray, for: .selected)
         btn.titleLabel?.font = UIFont.boldSystemFont(ofSize: 26)
         btn.addTarget(self, action: #selector(startCheck), for: .touchUpInside)
         return btn
@@ -38,16 +38,17 @@ class CheckViewController: UIViewController {
         // Do any additional setup after loading the view.
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .compose, target: self, action: #selector(filter))
         view.addSubview(emptyLabel)
-        
         view.addSubview(checkButton)
         
         KeepAliveManager.shared.requestAuthorizationIfNeeded()
     }
     
     @objc func filter() {
-        navigationController?.pushViewController(FilterViewController(), animated: true)
+        navigationController?.pushViewController(StarViewController(), animated: true)
     }
-    
+}
+
+extension CheckViewController {
     @objc func startCheck() {
         checkButton.isSelected = !checkButton.isSelected
         
@@ -56,7 +57,55 @@ class CheckViewController: UIViewController {
         }
     }
     
+    func playWaitingAnimation() {
+        stopWaitingAnnimation()
+        let animation = CABasicAnimation(keyPath: "opacity")
+        animation.fromValue = NSNumber(value: 0)
+        animation.toValue = NSNumber(value: 1)
+        animation.autoreverses = true
+        animation.duration = 1
+        animation.repeatCount = Float.greatestFiniteMagnitude
+        animation.timingFunction = CAMediaTimingFunction(name: .easeInEaseOut)
+        checkButton.layer.add(animation, forKey: "LoadingAnimation")
+    }
+    
+    func stopWaitingAnnimation() {
+        checkButton.layer.removeAllAnimations()
+    }
+    
+    func playStaredHittedAction(with availableList:[AppleStore]) {
+        UIImpactFeedbackGenerator(style: .heavy).impactOccurred()
+        AudioServicesPlaySystemSound(1021) //http://iphonedevwiki.net/index.php/AudioServices
+
+        if UIApplication.shared.applicationState == .background {
+            let content = UNMutableNotificationContent()
+
+            var storeSet:Set<String> = []
+            availableList.forEach({storeSet.insert($0.info.storeName)})
+            var phoneSet:Set<String> = []
+            availableList.forEach({$0.iPhoneList.forEach({phoneSet.insert($0.info.name)})})
+
+            var title = storeSet.joined(separator: ",")
+            if title.count <= 0 {
+                title = "你关心的手机有现货"
+            }
+            
+            var body = phoneSet.joined(separator: "/")
+            if body.count <= 0 {
+                body = "快来看看"
+            }
+            
+            content.title = title
+            content.body = body
+
+            let request = UNNotificationRequest(identifier: UUID().uuidString, content: content, trigger: nil)
+            UNUserNotificationCenter.current().add(request, withCompletionHandler: nil)
+        }
+    }
+    
     @objc func checkAvailability() {
+        stopWaitingAnnimation()
+        
         let task = URLSession.shared.dataTask(with: URL(string: "https://reserve-prime.apple.com/CN/zh_CN/reserve/A/availability.json")!) { (data, response, error) in
             if let err = error {
                 print("\(err)")
@@ -101,11 +150,12 @@ class CheckViewController: UIViewController {
                     }
                     
                     // Filter
+                    var hitStaredStore = false
                     var hintText:String = ""
                     var availableList:[AppleStore] = []
                     for store in response.stores {
-                        if !FilterManager.shared.filterList.contains(where: {$0.storeNumber == store.storeNumber}) {
-                            continue
+                        if StarManager.shared.containStore(store) {
+                            hitStaredStore = true
                         }
                         
                         let availablePhoneList = store.iPhoneList.filter({$0.availability.contract || $0.availability.unlocked})
@@ -122,18 +172,23 @@ class CheckViewController: UIViewController {
                     }
                     
                     // Handle
-                    if availableList.count > 0 {
-                        print("----------------\n\(hintText)\n----------------")
+                    DispatchQueue.main.async {
 
-                        DispatchQueue.main.async {
+                        if availableList.count > 0 {
+                            print("----------------\n\(hintText)\n----------------")
+                            
                             self.emptyLabel.font = UIFont.systemFont(ofSize: 24)
                             self.emptyLabel.text = hintText
-                            UIImpactFeedbackGenerator(style: .heavy).impactOccurred()
-                        }
-                    } else {
-                        print("Availability checked: \(response.updated)")
-
-                        DispatchQueue.main.async {
+                            
+                            if hitStaredStore {
+                                self.view.backgroundColor = .red
+                                self.playStaredHittedAction(with: availableList)
+                            } else {
+                                self.view.backgroundColor = .white
+                            }
+                        } else {
+                            print("Availability checked: \(response.updated)")
+                            
                             self.emptyLabel.font = UIFont.boldSystemFont(ofSize: 30)
                             self.emptyLabel.text = "暂时无货"
                         }
@@ -145,6 +200,7 @@ class CheckViewController: UIViewController {
             
             DispatchQueue.main.async {
                 if self.checkButton.isSelected {
+                    self.playWaitingAnimation()
                     self.perform(#selector(self.checkAvailability), with: nil, afterDelay: 10)
                 }
             }

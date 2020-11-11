@@ -56,3 +56,32 @@ struct AppleStoreAvailabilityResponse {
 
     var stores:[AppleStore] = []
 }
+
+
+extension AppleStore {
+    func mergedPhoneDescription() ->String {
+        var tempDescMap:[String:[iPhone]] = [:]
+        for phone in iPhoneList {
+            if var list = tempDescMap[phone.info.name] {
+                list.append(phone)
+                tempDescMap[phone.info.name] = list
+            } else {
+                tempDescMap[phone.info.name] = [phone]
+            }
+        }
+        
+        var descList:[String] = []
+        tempDescMap.forEach { (name, phoneList) in
+            var desc = "\(name) "
+            for i in 0..<phoneList.count {
+                let phone = phoneList[i]
+                desc += "\(phone.info.color)\(phone.info.capacity)"
+                if i != phoneList.count-1 {
+                    desc += "/"
+                }
+            }
+            descList.append(desc)
+        }
+        return descList.joined(separator: ", ")
+    }
+}
