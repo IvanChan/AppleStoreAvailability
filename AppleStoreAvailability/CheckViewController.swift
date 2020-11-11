@@ -81,11 +81,11 @@ extension CheckViewController {
             let content = UNMutableNotificationContent()
 
             var storeSet:Set<String> = []
-            availableList.forEach({storeSet.insert($0.info.storeName)})
+            availableList.forEach({storeSet.insert($0.info.description)})
             var phoneSet:Set<String> = []
-            availableList.forEach({$0.iPhoneList.forEach({phoneSet.insert($0.info.name)})})
+            availableList.forEach({$0.iPhoneList.forEach({phoneSet.insert($0.info.description)})})
 
-            var title = storeSet.joined(separator: ",")
+            var title = storeSet.joined(separator: "/")
             if title.count <= 0 {
                 title = "你关心的手机有现货"
             }
@@ -154,12 +154,14 @@ extension CheckViewController {
                     var hintText:String = ""
                     var availableList:[AppleStore] = []
                     for store in response.stores {
-                        if StarManager.shared.containStore(store) {
-                            hitStaredStore = true
-                        }
                         
                         let availablePhoneList = store.iPhoneList.filter({$0.availability.contract || $0.availability.unlocked})
                         if availablePhoneList.count > 0 {
+                            
+                            if StarManager.shared.containStore(store) {
+                                hitStaredStore = true
+                            }
+                            
                             var storeCopy = store
                             storeCopy.iPhoneList = availablePhoneList
                             availableList.append(storeCopy)
