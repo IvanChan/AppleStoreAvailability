@@ -191,6 +191,7 @@ extension CheckViewController {
                         } else {
                             print("Availability checked: \(response.updated)")
                             
+                            self.view.backgroundColor = .white
                             self.emptyLabel.font = UIFont.boldSystemFont(ofSize: 30)
                             self.emptyLabel.text = "暂时无货"
                         }
