@@ -1,5 +1,5 @@
 //
-//  StarViewController.swift
+//  StoreListViewController.swift
 //  AppleStoreAvailability
 //
 //  Created by _ivanC on 2020/11/11.
@@ -7,54 +7,7 @@
 
 import UIKit
 
-class StarManager {
-    static let shared = StarManager()
-
-    private(set) var staredStoreList:[AppleStore] = []
-    
-    init() {
-        reloadFromDisk()
-    }
-    
-    func reloadFromDisk() {
-        staredStoreList.removeAll()
-        if let list = UserDefaults.standard.array(forKey: "ASA_staredStoreList") as? [String] {
-            for storeNumber in list {
-                if let info = AppleStoreMapping[storeNumber] {
-                    let store = AppleStore(storeNumber: storeNumber, info: info)
-                    staredStoreList.append(store)
-                }
-            }
-        }
-    }
-    
-    func containStore(_ store:AppleStore) -> Bool {
-        return staredStoreList.contains(where: {$0.storeNumber == store.storeNumber})
-    }
-    
-    func starStore(_ store:AppleStore) {
-        staredStoreList.insert(store, at: 0)
-        syncToDisk()
-    }
-    
-    func removeStore(_ store:AppleStore) {
-        staredStoreList.removeAll(where: {$0.storeNumber == store.storeNumber})
-        syncToDisk()
-    }
-    
-    func syncToDisk() {
-        let list = staredStoreList.compactMap({$0.storeNumber})
-        UserDefaults.standard.setValue(list, forKey: "ASA_staredStoreList")
-    }
-    
-    func clearAll() {
-        staredStoreList.removeAll()
-        syncToDisk()
-    }
-}
-
-
-class StarViewController: UITableViewController {
+class StoreListViewController: UITableViewController {
 
     private var allStores:[[AppleStore]] = []
     private func reloadAllStores() {
@@ -62,7 +15,7 @@ class StarViewController: UITableViewController {
                 
         var tempSection:[String:[AppleStore]] = [:]
         AppleStoreMapping.forEach { (storeNumber, storeInfo) in
-            let store = AppleStore(storeNumber: storeNumber, info: storeInfo)
+            let store = AppleStore(with: storeNumber, info: storeInfo)
             if var list = tempSection[storeInfo.city] {
                 list.append(store)
                 tempSection[storeInfo.city] = list
@@ -86,23 +39,30 @@ class StarViewController: UITableViewController {
             
             return first1.info.city > first2.info.city
         }
+        tableView.reloadData()
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        title = "特别关注"
+        title = "店铺列表"
     
         // Do any additional setup after loading the view.
-        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .undo, target: self, action: #selector(clearAll))
+        navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(named: "reset"), style: .plain, target: self, action: #selector(clearAll))
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: "StarCell")
 
         reloadAllStores()
     }
     
     @objc func clearAll() {
-        StarManager.shared.clearAll()
-        tableView.reloadData()
+        let alert = UIAlertController(title: "重置关心项", message: nil, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "确定", style: .default, handler: { action in
+            StarManager.shared.clearAllStarredStore()
+            self.tableView.reloadData()
+        }))
+        alert.addAction(UIAlertAction(title: "取消", style: .cancel, handler: { action in
+        }))
+        self.present(alert, animated: true, completion: nil)
     }
     
     override func numberOfSections(in tableView: UITableView) -> Int {
@@ -123,7 +83,7 @@ class StarViewController: UITableViewController {
         let store = allStores[indexPath.section][indexPath.row]
         cell.textLabel?.text = store.info.storeName
         
-        if StarManager.shared.staredStoreList.contains(where: {$0.storeNumber == store.storeNumber}) {
+        if StarManager.shared.containStore(store) {
             cell.accessoryType = .checkmark
         } else {
             cell.accessoryType = .none

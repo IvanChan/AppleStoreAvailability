@@ -7,29 +7,40 @@
 
 import UIKit
 
-struct iPhoneAvailability {
+class ProductAvailability {
     var contract:Bool = false
     var unlocked:Bool = false
 }
 
-struct iPhoneInfo {
+class ProductInfo {
     var name:String
-    var color:String
     var capacity:String
-    
+    var color:String
+
     var description:String {
-        return "\(name), \(color), \(capacity)"
+        return "\(name) \(capacity) \(color)"
+    }
+    
+    init(name:String, capacity:String, color:String) {
+        self.name = name
+        self.capacity = capacity
+        self.color = color
     }
 }
 
-struct iPhone {
+class AppleProduct {
     var partNumber:String
-    var info:iPhoneInfo
+    var info:ProductInfo
     
-    var availability = iPhoneAvailability()
+    var availability = ProductAvailability()
+    
+    init(with partNumber:String, info:ProductInfo) {
+        self.partNumber = partNumber
+        self.info = info
+    }
 }
 
-struct AppleStoreInfo {
+class StoreInfo {
     var city:String
     var storeName:String
 //    var latitude:String
@@ -39,15 +50,25 @@ struct AppleStoreInfo {
     var description:String {
         return "\(city), \(storeName)"
     }
+    
+    init(city:String, storeName:String) {
+        self.city = city
+        self.storeName = storeName
+    }
 }
 
-struct AppleStore {
+class AppleStore {
     var storeNumber:String
-    var info:AppleStoreInfo
-    var iPhoneList:[iPhone] = []
+    var info:StoreInfo
+    var iPhoneList:[AppleProduct] = []
+    
+    init(with storeNumber:String, info:StoreInfo) {
+        self.storeNumber = storeNumber
+        self.info = info
+    }
 }
 
-struct AppleStoreAvailabilityResponse {
+class AppleStoreAvailabilityResponse {
     var isToday:Bool = false
     var updated:Int64 = 0
     var launchDate: [String:Any]?
@@ -60,7 +81,7 @@ struct AppleStoreAvailabilityResponse {
 
 extension AppleStore {
     func mergedPhoneDescription() ->String {
-        var tempDescMap:[String:[iPhone]] = [:]
+        var tempDescMap:[String:[AppleProduct]] = [:]
         for phone in iPhoneList {
             if var list = tempDescMap[phone.info.name] {
                 list.append(phone)

@@ -7,33 +7,41 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		9E5CE4C4255C13A200F9FC68 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E5CE4C3255C13A200F9FC68 /* AppDelegate.swift */; };
-		9E5CE4C6255C13A200F9FC68 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E5CE4C5255C13A200F9FC68 /* SceneDelegate.swift */; };
-		9E5CE4C8255C13A200F9FC68 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E5CE4C7255C13A200F9FC68 /* ViewController.swift */; };
 		9E5CE4CB255C13A200F9FC68 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9E5CE4C9255C13A200F9FC68 /* Main.storyboard */; };
 		9E5CE4CD255C13A200F9FC68 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9E5CE4CC255C13A200F9FC68 /* Assets.xcassets */; };
 		9E5CE4D0255C13A200F9FC68 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9E5CE4CE255C13A200F9FC68 /* LaunchScreen.storyboard */; };
-		9E5CE4DD255C13CB00F9FC68 /* StarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E5CE4D8255C13CB00F9FC68 /* StarViewController.swift */; };
-		9E5CE4DE255C13CB00F9FC68 /* CheckViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E5CE4D9255C13CB00F9FC68 /* CheckViewController.swift */; };
-		9E5CE4DF255C13CB00F9FC68 /* AppstoreProductMapping.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E5CE4DA255C13CB00F9FC68 /* AppstoreProductMapping.swift */; };
-		9E5CE4E0255C13CB00F9FC68 /* AppleStoreAvailability.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E5CE4DB255C13CB00F9FC68 /* AppleStoreAvailability.swift */; };
-		9E5CE4E1255C13CB00F9FC68 /* KeepAliveManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E5CE4DC255C13CB00F9FC68 /* KeepAliveManager.swift */; };
+		9EB83941255CF7B300F3B6E7 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9EB83936255CF7B300F3B6E7 /* ViewController.swift */; };
+		9EB83942255CF7B300F3B6E7 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9EB83937255CF7B300F3B6E7 /* AppDelegate.swift */; };
+		9EB83943255CF7B300F3B6E7 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9EB83938255CF7B300F3B6E7 /* SceneDelegate.swift */; };
+		9EB83944255CF7B300F3B6E7 /* StarManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9EB83939255CF7B300F3B6E7 /* StarManager.swift */; };
+		9EB83945255CF7B300F3B6E7 /* AppstoreProductMapping.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9EB8393B255CF7B300F3B6E7 /* AppstoreProductMapping.swift */; };
+		9EB83946255CF7B300F3B6E7 /* AppleStoreAvailability.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9EB8393C255CF7B300F3B6E7 /* AppleStoreAvailability.swift */; };
+		9EB83947255CF7B300F3B6E7 /* KeepAliveManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9EB8393D255CF7B300F3B6E7 /* KeepAliveManager.swift */; };
+		9EB83948255CF7B300F3B6E7 /* CheckViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9EB8393E255CF7B300F3B6E7 /* CheckViewController.swift */; };
+		9EB83955255D08B300F3B6E7 /* StoreListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9EB83953255D08B300F3B6E7 /* StoreListViewController.swift */; };
+		9EB83956255D08B300F3B6E7 /* ProductListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9EB83954255D08B300F3B6E7 /* ProductListViewController.swift */; };
+		9EB8395A255D08C500F3B6E7 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9EB83959255D08C500F3B6E7 /* SettingsViewController.swift */; };
+		9EB8395E255D5D1B00F3B6E7 /* CheckManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9EB8395D255D5D1B00F3B6E7 /* CheckManager.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		9E5CE4C0255C13A200F9FC68 /* AppleStoreAvailability.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AppleStoreAvailability.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		9E5CE4C3255C13A200F9FC68 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		9E5CE4C5255C13A200F9FC68 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
-		9E5CE4C7255C13A200F9FC68 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		9E5CE4CA255C13A200F9FC68 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		9E5CE4CC255C13A200F9FC68 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		9E5CE4CF255C13A200F9FC68 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		9E5CE4D1255C13A200F9FC68 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		9E5CE4D8255C13CB00F9FC68 /* StarViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StarViewController.swift; sourceTree = "<group>"; };
-		9E5CE4D9255C13CB00F9FC68 /* CheckViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CheckViewController.swift; sourceTree = "<group>"; };
-		9E5CE4DA255C13CB00F9FC68 /* AppstoreProductMapping.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppstoreProductMapping.swift; sourceTree = "<group>"; };
-		9E5CE4DB255C13CB00F9FC68 /* AppleStoreAvailability.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppleStoreAvailability.swift; sourceTree = "<group>"; };
-		9E5CE4DC255C13CB00F9FC68 /* KeepAliveManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeepAliveManager.swift; sourceTree = "<group>"; };
+		9EB83936255CF7B300F3B6E7 /* ViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		9EB83937255CF7B300F3B6E7 /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		9EB83938255CF7B300F3B6E7 /* SceneDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
+		9EB83939255CF7B300F3B6E7 /* StarManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StarManager.swift; sourceTree = "<group>"; };
+		9EB8393B255CF7B300F3B6E7 /* AppstoreProductMapping.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppstoreProductMapping.swift; sourceTree = "<group>"; };
+		9EB8393C255CF7B300F3B6E7 /* AppleStoreAvailability.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppleStoreAvailability.swift; sourceTree = "<group>"; };
+		9EB8393D255CF7B300F3B6E7 /* KeepAliveManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeepAliveManager.swift; sourceTree = "<group>"; };
+		9EB8393E255CF7B300F3B6E7 /* CheckViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CheckViewController.swift; sourceTree = "<group>"; };
+		9EB83953255D08B300F3B6E7 /* StoreListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StoreListViewController.swift; sourceTree = "<group>"; };
+		9EB83954255D08B300F3B6E7 /* ProductListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProductListViewController.swift; sourceTree = "<group>"; };
+		9EB83959255D08C500F3B6E7 /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
+		9EB8395D255D5D1B00F3B6E7 /* CheckManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckManager.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -66,20 +74,48 @@
 		9E5CE4C2255C13A200F9FC68 /* AppleStoreAvailability */ = {
 			isa = PBXGroup;
 			children = (
-				9E5CE4C3255C13A200F9FC68 /* AppDelegate.swift */,
-				9E5CE4C5255C13A200F9FC68 /* SceneDelegate.swift */,
-				9E5CE4C7255C13A200F9FC68 /* ViewController.swift */,
-				9E5CE4DB255C13CB00F9FC68 /* AppleStoreAvailability.swift */,
-				9E5CE4DA255C13CB00F9FC68 /* AppstoreProductMapping.swift */,
-				9E5CE4D9255C13CB00F9FC68 /* CheckViewController.swift */,
-				9E5CE4D8255C13CB00F9FC68 /* StarViewController.swift */,
-				9E5CE4DC255C13CB00F9FC68 /* KeepAliveManager.swift */,
+				9EB83931255CF7B300F3B6E7 /* Classes */,
 				9E5CE4C9255C13A200F9FC68 /* Main.storyboard */,
 				9E5CE4CC255C13A200F9FC68 /* Assets.xcassets */,
 				9E5CE4CE255C13A200F9FC68 /* LaunchScreen.storyboard */,
 				9E5CE4D1255C13A200F9FC68 /* Info.plist */,
 			);
 			path = AppleStoreAvailability;
+			sourceTree = "<group>";
+		};
+		9EB83931255CF7B300F3B6E7 /* Classes */ = {
+			isa = PBXGroup;
+			children = (
+				9EB83935255CF7B300F3B6E7 /* App */,
+				9EB8393A255CF7B300F3B6E7 /* Defines */,
+				9EB83939255CF7B300F3B6E7 /* StarManager.swift */,
+				9EB8393D255CF7B300F3B6E7 /* KeepAliveManager.swift */,
+				9EB8395D255D5D1B00F3B6E7 /* CheckManager.swift */,
+				9EB8393E255CF7B300F3B6E7 /* CheckViewController.swift */,
+				9EB83954255D08B300F3B6E7 /* ProductListViewController.swift */,
+				9EB83953255D08B300F3B6E7 /* StoreListViewController.swift */,
+				9EB83959255D08C500F3B6E7 /* SettingsViewController.swift */,
+			);
+			path = Classes;
+			sourceTree = "<group>";
+		};
+		9EB83935255CF7B300F3B6E7 /* App */ = {
+			isa = PBXGroup;
+			children = (
+				9EB83937255CF7B300F3B6E7 /* AppDelegate.swift */,
+				9EB83938255CF7B300F3B6E7 /* SceneDelegate.swift */,
+				9EB83936255CF7B300F3B6E7 /* ViewController.swift */,
+			);
+			path = App;
+			sourceTree = "<group>";
+		};
+		9EB8393A255CF7B300F3B6E7 /* Defines */ = {
+			isa = PBXGroup;
+			children = (
+				9EB8393B255CF7B300F3B6E7 /* AppstoreProductMapping.swift */,
+				9EB8393C255CF7B300F3B6E7 /* AppleStoreAvailability.swift */,
+			);
+			path = Defines;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -152,14 +188,18 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				9E5CE4E0255C13CB00F9FC68 /* AppleStoreAvailability.swift in Sources */,
-				9E5CE4C8255C13A200F9FC68 /* ViewController.swift in Sources */,
-				9E5CE4E1255C13CB00F9FC68 /* KeepAliveManager.swift in Sources */,
-				9E5CE4C4255C13A200F9FC68 /* AppDelegate.swift in Sources */,
-				9E5CE4DF255C13CB00F9FC68 /* AppstoreProductMapping.swift in Sources */,
-				9E5CE4DD255C13CB00F9FC68 /* StarViewController.swift in Sources */,
-				9E5CE4DE255C13CB00F9FC68 /* CheckViewController.swift in Sources */,
-				9E5CE4C6255C13A200F9FC68 /* SceneDelegate.swift in Sources */,
+				9EB83943255CF7B300F3B6E7 /* SceneDelegate.swift in Sources */,
+				9EB83956255D08B300F3B6E7 /* ProductListViewController.swift in Sources */,
+				9EB8395A255D08C500F3B6E7 /* SettingsViewController.swift in Sources */,
+				9EB83946255CF7B300F3B6E7 /* AppleStoreAvailability.swift in Sources */,
+				9EB83942255CF7B300F3B6E7 /* AppDelegate.swift in Sources */,
+				9EB83955255D08B300F3B6E7 /* StoreListViewController.swift in Sources */,
+				9EB83948255CF7B300F3B6E7 /* CheckViewController.swift in Sources */,
+				9EB83947255CF7B300F3B6E7 /* KeepAliveManager.swift in Sources */,
+				9EB83941255CF7B300F3B6E7 /* ViewController.swift in Sources */,
+				9EB83944255CF7B300F3B6E7 /* StarManager.swift in Sources */,
+				9EB8395E255D5D1B00F3B6E7 /* CheckManager.swift in Sources */,
+				9EB83945255CF7B300F3B6E7 /* AppstoreProductMapping.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
