@@ -17,7 +17,7 @@ class CheckManager: NSObject {
     private func mergeResult(with result:[AppleStore]) {
         for store in result {
             if let existStore = checkingResult.first(where: {$0.storeNumber == store.storeNumber}) {
-                existStore.iPhoneList += store.iPhoneList
+                existStore.productList += store.productList
             } else {
                 checkingResult.append(store)
             }
@@ -87,21 +87,21 @@ class CheckManager: NSObject {
                         storeList.forEach { (storeNumber, storeValue) in
                             if let storeInfo = AppleStoreMapping[storeNumber] {
                                 let store = AppleStore(with: storeNumber, info: storeInfo)
-                                if let phoneList = storeValue as? [String:Any] {
-                                    phoneList.forEach { (partNumber, phoneValue) in
-                                        if let phoneInfo = AppleProductMapping[partNumber] {
-                                            let phone = AppleProduct(with: partNumber, info: phoneInfo)
+                                if let productList = storeValue as? [String:Any] {
+                                    productList.forEach { (partNumber, productValue) in
+                                        if let productInfo = AppleProductMapping[partNumber] {
+                                            let product = AppleProduct(with: partNumber, info: productInfo)
                                             
-                                            if let availabilityValue = phoneValue as? [String:Any], let availability = availabilityValue["availability"] as? [String: Any] {
+                                            if let availabilityValue = productValue as? [String:Any], let availability = availabilityValue["availability"] as? [String: Any] {
                                                 if let contract = availability["contract"] as? Bool {
-                                                    phone.availability.contract = contract
+                                                    product.availability.contract = contract
                                                 }
                                                 
                                                 if let unlocked = availability["unlocked"] as? Bool {
-                                                    phone.availability.unlocked = unlocked
+                                                    product.availability.unlocked = unlocked
                                                 }
                                             }
-                                            store.iPhoneList.append(phone)
+                                            store.productList.append(product)
                                         }
                                     }
                                 }
@@ -113,9 +113,9 @@ class CheckManager: NSObject {
                     // Filter
                     var availableList:[AppleStore] = []
                     for store in response.stores {
-                        let availablePhoneList = store.iPhoneList.filter({$0.availability.contract || $0.availability.unlocked})
-                        if availablePhoneList.count > 0 {
-                            store.iPhoneList = availablePhoneList
+                        let availableProductList = store.productList.filter({$0.availability.contract || $0.availability.unlocked})
+                        if availableProductList.count > 0 {
+                            store.productList = availableProductList
                             availableList.append(store)
                         }
                     }

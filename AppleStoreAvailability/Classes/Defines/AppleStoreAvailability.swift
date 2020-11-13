@@ -60,7 +60,7 @@ class StoreInfo {
 class AppleStore {
     var storeNumber:String
     var info:StoreInfo
-    var iPhoneList:[AppleProduct] = []
+    var productList:[AppleProduct] = []
     
     init(with storeNumber:String, info:StoreInfo) {
         self.storeNumber = storeNumber
@@ -76,33 +76,4 @@ class AppleStoreAvailabilityResponse {
     var preLaunchStartTime: [String:Any]?
 
     var stores:[AppleStore] = []
-}
-
-
-extension AppleStore {
-    func mergedPhoneDescription() ->String {
-        var tempDescMap:[String:[AppleProduct]] = [:]
-        for phone in iPhoneList {
-            if var list = tempDescMap[phone.info.name] {
-                list.append(phone)
-                tempDescMap[phone.info.name] = list
-            } else {
-                tempDescMap[phone.info.name] = [phone]
-            }
-        }
-        
-        var descList:[String] = []
-        tempDescMap.forEach { (name, phoneList) in
-            var desc = "\(name) "
-            for i in 0..<phoneList.count {
-                let phone = phoneList[i]
-                desc += "\(phone.info.color)\(phone.info.capacity)"
-                if i != phoneList.count-1 {
-                    desc += "/"
-                }
-            }
-            descList.append(desc)
-        }
-        return descList.joined(separator: ", ")
-    }
 }

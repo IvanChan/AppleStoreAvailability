@@ -35,6 +35,7 @@ class CheckViewController: UIViewController {
         title = "Apple Store"
 
         // Do any additional setup after loading the view.
+        
         navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(named: "settings"), style: .plain, target: self, action: #selector(settingsClicked))
 
         view.backgroundColor = .white
@@ -89,16 +90,24 @@ extension CheckViewController {
             let content = UNMutableNotificationContent()
 
             var storeSet:Set<String> = []
-            availableList.forEach({storeSet.insert($0.info.description)})
-            var phoneSet:Set<String> = []
-            availableList.forEach({$0.iPhoneList.forEach({phoneSet.insert($0.info.description)})})
-
+            var productSet:Set<String> = []
+            availableList.forEach { (store) in
+                if StarManager.shared.containStore(store) {
+                    storeSet.insert(store.info.description)
+                    store.productList.forEach { (product) in
+                        if StarManager.shared.containProduct(product) {
+                            productSet.insert(product.info.description)
+                        }
+                    }
+                }
+            }
+            
             var title = storeSet.joined(separator: "/")
             if title.count <= 0 {
                 title = "你关心的手机有现货"
             }
             
-            var body = phoneSet.joined(separator: "/")
+            var body = productSet.joined(separator: "/")
             if body.count <= 0 {
                 body = "快来看看"
             }
@@ -137,7 +146,7 @@ extension CheckViewController {
                     
                     hintText.append(NSAttributedString(string: "\(store.info.description)\n", attributes: [.foregroundColor:storeColor, .font:UIFont.boldSystemFont(ofSize: 20)]))
                     
-                    let sortedProductList = store.iPhoneList.sorted { (s1, s2) -> Bool in
+                    let sortedProductList = store.productList.sorted { (s1, s2) -> Bool in
                         return StarManager.shared.containProduct(s1)
                     }
                     
@@ -161,8 +170,8 @@ extension CheckViewController {
                 print("----------------\n\(hintText)\n----------------")
                 self.displayTextView.attributedText = hintText
                 
-                if shouldAlert {
-                    self.playstarredHittedAction(with: result)
+                if shouldAlert && self.checkButton.isSelected {
+                    self.playstarredHittedAction(with: sortedResult)
                 }
             } else {
                 print("Availability checked: No available product")
