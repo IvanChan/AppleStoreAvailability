@@ -117,9 +117,7 @@ extension CheckViewController {
         CheckManager.shared.startCheck { (result) in
             
             if result.count > 0 {
-                var hitstarredStore = false
-                var hitstarredProduct = true
-
+                var shouldAlert = false
                 let hintText = NSMutableAttributedString()
 
                 let sortedResult = result.sorted { (s1, s2) -> Bool in
@@ -128,14 +126,13 @@ extension CheckViewController {
                 
                 for store in sortedResult {
                     
+                    var hitstarredStore = false
+                    var hitstarredProduct = false
+
                     var storeColor:UIColor = .darkGray
                     if StarManager.shared.containStore(store) {
                         hitstarredStore = true
                         storeColor = .red
-                    }
-                    
-                    if StarManager.shared.starredProductCount() > 0 {
-                        hitstarredProduct = false
                     }
                     
                     hintText.append(NSAttributedString(string: "\(store.info.description)\n", attributes: [.foregroundColor:storeColor, .font:UIFont.boldSystemFont(ofSize: 20)]))
@@ -155,12 +152,16 @@ extension CheckViewController {
                     }
                     
                     hintText.append(NSAttributedString(string: "\n", attributes: [.foregroundColor:storeColor, .font:UIFont.boldSystemFont(ofSize: 20)]))
+                    
+                    if !shouldAlert {
+                        shouldAlert = hitstarredStore && hitstarredProduct
+                    }
                 }
                 
                 print("----------------\n\(hintText)\n----------------")
                 self.displayTextView.attributedText = hintText
                 
-                if hitstarredStore && hitstarredProduct {
+                if shouldAlert {
                     self.playstarredHittedAction(with: result)
                 }
             } else {
