@@ -11,6 +11,14 @@ import UserNotifications
 
 class CheckViewController: UIViewController {
 
+    private lazy var backgroundAnimatedView:UIView = {
+        let bg = UIView(frame: view.bounds)
+        bg.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        bg.isUserInteractionEnabled = false
+        bg.backgroundColor = .lightGray
+        return bg
+    }()
+    
     private lazy var displayTextView:UITextView = {
         let label = UITextView(frame: view.bounds)
         label.textAlignment = .center
@@ -18,29 +26,21 @@ class CheckViewController: UIViewController {
         return label
     }()
     
-    private lazy var checkButton:UIButton = {
-        let btn = UIButton(frame: CGRect(x: 0, y: view.bounds.maxY - 200, width: view.bounds.width, height: 50))
-        btn.setTitle("开始", for: .normal)
-        btn.setTitle("暂停", for: .selected)
-        btn.setTitleColor(.darkGray, for: .normal)
-        btn.setTitleColor(.gray, for: .selected)
-        btn.titleLabel?.font = UIFont.boldSystemFont(ofSize: 26)
-        btn.addTarget(self, action: #selector(startCheck), for: .touchUpInside)
-        return btn
-    }()
-    
+    private var isCheckingEnabled = false
+    private var isChecking = false
+
     override func viewDidLoad() {
         super.viewDidLoad()
         
         title = "Apple Store"
 
         // Do any additional setup after loading the view.
-        
+        navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .play, target: self, action: #selector(startCheck))
+    
         navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(named: "settings"), style: .plain, target: self, action: #selector(settingsClicked))
 
         view.backgroundColor = .white
         view.addSubview(displayTextView)
-        view.addSubview(checkButton)        
     }
     
     @objc func settingsClicked() {
@@ -50,9 +50,11 @@ class CheckViewController: UIViewController {
 
 extension CheckViewController {
     @objc func startCheck() {
-        checkButton.isSelected = !checkButton.isSelected
+        isCheckingEnabled = !isCheckingEnabled
         
-        if checkButton.isSelected {
+        navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: isCheckingEnabled ? .pause : .play, target: self, action: #selector(startCheck))
+        
+        if !isChecking && isCheckingEnabled {
             checkAvailability()
         }
     }
@@ -66,11 +68,11 @@ extension CheckViewController {
         animation.duration = 1
         animation.repeatCount = Float.greatestFiniteMagnitude
         animation.timingFunction = CAMediaTimingFunction(name: .easeInEaseOut)
-        checkButton.layer.add(animation, forKey: "LoadingAnimation")
+        backgroundAnimatedView.layer.add(animation, forKey: "LoadingAnimation")
     }
     
     func stopWaitingAnnimation() {
-        checkButton.layer.removeAllAnimations()
+        backgroundAnimatedView.layer.removeAllAnimations()
     }
     
     func playstarredHittedAction(with availableList:[AppleStore]) {
@@ -123,6 +125,7 @@ extension CheckViewController {
     @objc func checkAvailability() {
         stopWaitingAnnimation()
 
+        isChecking = true
         CheckManager.shared.startCheck { (result) in
             
             if result.count > 0 {
@@ -170,7 +173,8 @@ extension CheckViewController {
                 print("----------------\n\(hintText)\n----------------")
                 self.displayTextView.attributedText = hintText
                 
-                if shouldAlert && self.checkButton.isSelected {
+                self.isChecking = false
+                if shouldAlert && self.isCheckingEnabled {
                     self.playstarredHittedAction(with: sortedResult)
                 }
             } else {
@@ -179,9 +183,11 @@ extension CheckViewController {
                 paraStyle.alignment = .center
                 paraStyle.lineBreakMode = .byWordWrapping
                 self.displayTextView.attributedText = NSAttributedString(string: "\n\n\n暂时无货", attributes: [.foregroundColor:UIColor.darkGray, .font:UIFont.boldSystemFont(ofSize: 30), .paragraphStyle:paraStyle])
+                
+                self.isChecking = false
             }
 
-            if self.checkButton.isSelected {
+            if self.isCheckingEnabled {
                 self.playWaitingAnimation()
                 self.perform(#selector(self.checkAvailability), with: nil, afterDelay: SettingsManager.refreshTimeInterval)
             }
