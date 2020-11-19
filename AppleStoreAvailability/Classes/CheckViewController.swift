@@ -60,16 +60,17 @@ class CheckViewController: UIViewController {
         backgroundAnimatedView.frame = view.bounds
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        resumeAnimation()
+    }
+    
     @objc func settingsClicked() {
         navigationController?.pushViewController(SettingsViewController(), animated: true)
     }
     
     @objc func receivedWillEnterForegroundNotification() {
-        if isCheckingEnabled {
-            playCheckingAnnimation()
-        } else {
-            stopCheckingAnnimation()
-        }
+        resumeAnimation()
     }
 }
 
@@ -87,6 +88,14 @@ extension CheckViewController {
         
         if !isChecking && isCheckingEnabled {
             checkAvailability()
+        }
+    }
+    
+    func resumeAnimation() {
+        if isCheckingEnabled {
+            playCheckingAnnimation()
+        } else {
+            stopCheckingAnnimation()
         }
     }
     
@@ -118,7 +127,6 @@ extension CheckViewController {
         }
         
         if SettingsManager.checkingAlertType.contains(.animation) {
-
         }
         
         if SettingsManager.checkingAlertType.contains(.backgroundNotification), UIApplication.shared.applicationState == .background {
