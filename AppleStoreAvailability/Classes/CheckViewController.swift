@@ -15,7 +15,8 @@ class CheckViewController: UIViewController {
         let bg = UIView(frame: view.bounds)
         bg.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         bg.isUserInteractionEnabled = false
-        bg.backgroundColor = .lightGray
+        bg.backgroundColor = UIColor.orange.withAlphaComponent(0.1)
+        bg.isHidden = true
         return bg
     }()
     
@@ -23,12 +24,17 @@ class CheckViewController: UIViewController {
         let label = UITextView(frame: view.bounds)
         label.textAlignment = .center
         label.isEditable = false
+        label.backgroundColor = .clear
         return label
     }()
     
     private var isCheckingEnabled = false
     private var isChecking = false
 
+    deinit {
+        NotificationCenter.default.removeObserver(self)
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -40,11 +46,22 @@ class CheckViewController: UIViewController {
         navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(named: "settings"), style: .plain, target: self, action: #selector(settingsClicked))
 
         view.backgroundColor = .white
+        view.addSubview(backgroundAnimatedView)
         view.addSubview(displayTextView)
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(receivedWillEnterForegroundNotification), name: UIApplication.willEnterForegroundNotification, object: nil)
     }
     
     @objc func settingsClicked() {
         navigationController?.pushViewController(SettingsViewController(), animated: true)
+    }
+    
+    @objc func receivedWillEnterForegroundNotification() {
+        if isCheckingEnabled {
+            playCheckingAnnimation()
+        } else {
+            stopCheckingAnnimation()
+        }
     }
 }
 
@@ -54,24 +71,32 @@ extension CheckViewController {
         
         navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: isCheckingEnabled ? .pause : .play, target: self, action: #selector(startCheck))
         
+        if isCheckingEnabled {
+            playCheckingAnnimation()
+        } else {
+            stopCheckingAnnimation()
+        }
+        
         if !isChecking && isCheckingEnabled {
             checkAvailability()
         }
     }
     
-    func playWaitingAnimation() {
-        stopWaitingAnnimation()
+    func playCheckingAnnimation() {
+        stopCheckingAnnimation()
+        backgroundAnimatedView.isHidden = false
         let animation = CABasicAnimation(keyPath: "opacity")
         animation.fromValue = NSNumber(value: 0)
         animation.toValue = NSNumber(value: 1)
         animation.autoreverses = true
-        animation.duration = 1
+        animation.duration = 1.6
         animation.repeatCount = Float.greatestFiniteMagnitude
         animation.timingFunction = CAMediaTimingFunction(name: .easeInEaseOut)
         backgroundAnimatedView.layer.add(animation, forKey: "LoadingAnimation")
     }
     
-    func stopWaitingAnnimation() {
+    func stopCheckingAnnimation() {
+        backgroundAnimatedView.isHidden = true
         backgroundAnimatedView.layer.removeAllAnimations()
     }
     
@@ -123,7 +148,6 @@ extension CheckViewController {
     }
     
     @objc func checkAvailability() {
-        stopWaitingAnnimation()
 
         isChecking = true
         CheckManager.shared.startCheck { (result) in
@@ -172,7 +196,7 @@ extension CheckViewController {
                 
                 print("----------------\n\(hintText)\n----------------")
                 self.displayTextView.attributedText = hintText
-                
+                self.displayTextView.scrollRectToVisible(CGRect(origin: .zero, size: CGSize(width: 1, height: 1)), animated: false)
                 self.isChecking = false
                 if shouldAlert && self.isCheckingEnabled {
                     self.playstarredHittedAction(with: sortedResult)
@@ -188,7 +212,6 @@ extension CheckViewController {
             }
 
             if self.isCheckingEnabled {
-                self.playWaitingAnimation()
                 self.perform(#selector(self.checkAvailability), with: nil, afterDelay: SettingsManager.refreshTimeInterval)
             }
         }
