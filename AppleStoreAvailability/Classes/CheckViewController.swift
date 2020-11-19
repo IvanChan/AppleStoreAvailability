@@ -196,7 +196,7 @@ extension CheckViewController {
                 
                 print("----------------\n\(hintText)\n----------------")
                 self.displayTextView.attributedText = hintText
-                self.displayTextView.scrollRectToVisible(CGRect(origin: .zero, size: CGSize(width: 1, height: 1)), animated: false)
+//                self.displayTextView.scrollRectToVisible(CGRect(origin: .zero, size: CGSize(width: 1, height: 1)), animated: false)
                 self.isChecking = false
                 if shouldAlert && self.isCheckingEnabled {
                     self.playstarredHittedAction(with: sortedResult)
