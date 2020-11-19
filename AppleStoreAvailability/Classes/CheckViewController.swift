@@ -25,6 +25,8 @@ class CheckViewController: UIViewController {
         label.textAlignment = .center
         label.isEditable = false
         label.backgroundColor = .clear
+//        label.textContainerInset = UIEdgeInsets(top: 100, left: 0, bottom: 100, right: 0)
+        label.alwaysBounceVertical = true
         return label
     }()
     
@@ -50,6 +52,12 @@ class CheckViewController: UIViewController {
         view.addSubview(displayTextView)
         
         NotificationCenter.default.addObserver(self, selector: #selector(receivedWillEnterForegroundNotification), name: UIApplication.willEnterForegroundNotification, object: nil)
+    }
+    
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        displayTextView.frame = view.bounds
+        backgroundAnimatedView.frame = view.bounds
     }
     
     @objc func settingsClicked() {
